@@ -1,0 +1,22 @@
+services:
+  database:
+    image: postgres:16.2-alpine
+    container_name: database
+    networks:
+      - localnet-bridge
+    env_file:
+      - ../src/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../database-data/postgresql/data/:/var/lib/postgresql/data/
+      - ../database-data/postgresql/log/:/var/log/postgresql/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+
+networks:
+  localnet-bridge:
+    driver: bridge
