@@ -16,6 +16,21 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
+  backend:
+    platform: linux/amd64
+    container_name: backend
+    networks:
+      - localnet-bridge
+    ports:
+      - "8000:8000"
+    build:
+      context: ..
+      dockerfile: ./devops/Dockerfile
+    command: [ '/bin/sh','-c','uvicorn app.main:app --host=0.0.0.0 --port=8000 --reload' ]
+    restart: unless-stopped
+    env_file:
+      - ../src/.env
+
 
 networks:
   localnet-bridge:
