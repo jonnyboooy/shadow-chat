@@ -1,8 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, status, Response
 from fastapi import status
 
-from app.api.healthcheck.schema import ErrorResponseSchema
-from app.api.schema import SuccessResponseSchema
+from .schema import UserResponseSchema, ErrorResponseSchema
+from .service import UsersService
 
 
 router = APIRouter(
@@ -17,21 +17,20 @@ router = APIRouter(
 
 
 @router.get(
-    "/{id}",
+    "/{user_id}",
     description="Application health check",
     responses={
         status.HTTP_200_OK: {
-            "model": SuccessResponseSchema,
+            "model": UserResponseSchema,
         },
     },
 )
-async def app_health_check(
-    user_id: int
-):
-    """
-    Получение информации о юзере по ID
-
-    :param user_id: ID юзера
-    :return: Pydantic схема с данными о найденном пользователе или None, если таковой не был найден
-    """
-    ...
+async def get_user_by_id(
+    user_id: int,
+    response: Response,
+) -> UserResponseSchema | ErrorResponseSchema:
+    try:
+        return await UsersService.get_by_id(user_id)
+    except Exception as e:
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return ErrorResponseSchema(message=str(e))
