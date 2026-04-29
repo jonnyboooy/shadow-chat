@@ -2,10 +2,6 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
-from ..schema import (
-    SuccessSchema,
-)
-
 
 class UserSchema(BaseModel):
     id: int
@@ -17,5 +13,5 @@ class UserSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class UserResponseSchema(SuccessSchema):
+class UserResponseSchema(UserSchema):
     result: UserSchema

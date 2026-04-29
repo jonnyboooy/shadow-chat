@@ -1,5 +1,5 @@
-from ..schema import (
-    SuccessResponseSchema,
-    ErrorResponseSchema
-)
+from ..schema import StatusResponseSchema
 
+
+class HealthCheckResponseSchema(StatusResponseSchema):
+    ...

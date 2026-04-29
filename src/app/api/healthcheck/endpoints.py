@@ -1,33 +1,19 @@
 from fastapi import APIRouter, status
 
-from .schema import (
-    SuccessResponseSchema,
-    ErrorResponseSchema
-)
+from .schema import HealthCheckResponseSchema
 
 
 router = APIRouter(
     prefix="/healthcheck",
-    tags=["Healthcheck"],
-    responses={
-        status.HTTP_500_INTERNAL_SERVER_ERROR: {
-            "model": ErrorResponseSchema,
-        },
-    }
+    tags=["Healthcheck"]
 )
 
 
 @router.get(
     "/",
-    description="Application health check",
-    responses={
-        status.HTTP_200_OK: {
-            "model": SuccessResponseSchema,
-        },
-    },
+    description="Application health check"
 )
-async def app_health_check():
-    return SuccessResponseSchema(
-        success=True,
-        message="App available!",
+async def app_health_check() -> HealthCheckResponseSchema:
+    return HealthCheckResponseSchema(
+        status="OK",
     )
