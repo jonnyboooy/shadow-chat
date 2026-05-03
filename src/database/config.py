@@ -1,6 +1,6 @@
 from pydantic import computed_field
 
-from utils.settings import BaseSettings
+from src.utils.settings import BaseSettings
 
 
 class Settings(BaseSettings):

@@ -26,7 +26,6 @@ services:
     build:
       context: ..
       dockerfile: ./devops/Dockerfile
-    command: [ '/bin/sh','-c','uvicorn app.main:app --host=0.0.0.0 --port=8000 --reload' ]
     restart: unless-stopped
     env_file:
       - ../.env

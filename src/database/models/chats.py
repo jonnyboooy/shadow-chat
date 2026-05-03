@@ -18,16 +18,28 @@ class Chat(BaseModel):
     id: Mapped[int] = mapped_column(
         primary_key=True,
         autoincrement=True,
-        comment="ID"
+        comment="ID чата"
     )
     name: Mapped[str] = mapped_column(
         comment="Название чата"
+    )
+    description: Mapped[str | None] = mapped_column(
+        comment="Описание чата (для групповых чатов)"
     )
     avatar_url: Mapped[str] = mapped_column(
         comment="Ссылка на аватар"
     )
     chat_type: Mapped[ChatType] = mapped_column(
         comment="Тип чата"
+    )
+    is_active: Mapped[bool] = mapped_column(
+        default=True,
+        server_default="true",
+        comment="Активен ли чат"
+    )
+    last_message_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        comment="Дата и время последнего сообщения"
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

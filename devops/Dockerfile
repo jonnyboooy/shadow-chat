@@ -1,12 +1,13 @@
-FROM python:3.10-alpine
+FROM python:3.12-alpine
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY pyproject.toml poetry.lock /app/
+WORKDIR /src
 
-WORKDIR /app
-
-RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-root
+COPY pyproject.toml .
+RUN pip install --no-cache-dir .
 
 COPY src/ .
+
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0", "--port=8000", "--reload"]

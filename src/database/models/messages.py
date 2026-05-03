@@ -12,7 +12,7 @@ class Message(BaseModel):
     id: Mapped[int] = mapped_column(
         primary_key=True,
         autoincrement=True,
-        comment="ID"
+        comment="ID сообщения"
     )
     chat_id: Mapped[int] = mapped_column(
         ForeignKey(
@@ -30,6 +30,18 @@ class Message(BaseModel):
     )
     content: Mapped[str] = mapped_column(
         comment="Текст сообщения"
+    )
+    is_edited: Mapped[bool] = mapped_column(
+        default=False,
+        server_default="false",
+        comment="Редактировалось ли сообщение"
+    )
+    reaction: Mapped[str | None] = mapped_column(
+        comment="Реакция на сообщение (эмодзи)"
+    )
+    deleted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        comment="Дата удаления сообщения (для soft delete)"
     )
     sent_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
