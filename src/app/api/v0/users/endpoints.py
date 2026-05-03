@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Response
 from fastapi import status
 
-from .schema import UserResponseSchema, ErrorResponseSchema
+from .schema import UserResponseSchema, DetailResponseSchema
 from .service import UsersService
 
 
@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["Users"],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {
-            "model": ErrorResponseSchema,
+            "model": DetailResponseSchema,
         },
     },
 )
@@ -28,9 +28,9 @@ router = APIRouter(
 async def get_user_by_id(
     user_id: int,
     response: Response,
-) -> UserResponseSchema | ErrorResponseSchema:
+) -> UserResponseSchema | DetailResponseSchema:
     try:
         return await UsersService.get_by_id(user_id)
     except Exception as e:
         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return ErrorResponseSchema(message=str(e))
+        return DetailResponseSchema(detail=str(e))
